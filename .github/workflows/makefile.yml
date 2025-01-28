@@ -12,9 +12,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
-    - name: Make Kernel
-      run: make OBJDUMP="aarch64-linux-gnu-objdump -d 2>/dev/null >/dev/null" ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnuabeihf- CC=clang LD=ld.lld HOSTCC=clang HOSTLD=ld.lld O=out sagit_defconfig all -j64 
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-    - name: List Files
-      run: ls
+    - name: Set up GCC
+      uses: actions/setup-gcc@v1
+      with:
+        gcc-version: '9.x'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+        
+    - name: Configure kernel
+      run: make sagit_defconfig
+
+    - name: Build project
+      run: |
+        make
+
+    - name: Run tests (optional)
+      run: |
+        make test
+
+    - name: Upload artifact (optional)
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-output
+        path: out
