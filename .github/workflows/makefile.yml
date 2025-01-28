@@ -16,4 +16,5 @@ jobs:
     - name: Make Kernel
       run: make OBJDUMP="aarch64-linux-gnu-objdump -d 2>/dev/null >/dev/null" ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnuabeihf- CC=clang LD=ld.lld HOSTCC=clang HOSTLD=ld.lld O=out sagit_defconfig all -j64 
 
-   
+    - name:List Files
+      run:ls
